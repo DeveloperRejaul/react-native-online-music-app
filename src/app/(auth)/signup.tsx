@@ -1,8 +1,11 @@
 import { View, Text, Pressable, ScrollView, useWindowDimensions } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Logo from '@/src/assets/icons/Logo';
 import { useForm } from 'react-hook-form';
 import Input from '@/src/components/input';
+import useFetch from '@/src/hooks/useFetch';
+import { useRouter } from 'expo-router';
+import { tost } from '@/src/utils/toast';
 
 interface InputData { 
   email: string;
@@ -11,14 +14,24 @@ interface InputData {
 }
 
 export default function Signup() {
-  const { height} = useWindowDimensions();
+  const { height } = useWindowDimensions();
+  const router = useRouter();
+  const { Post, data, isLoading, isSuccess} = useFetch();
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: { email: '', password: '', name:'' }
   });
   
-  const handleInput = (data: InputData) => { 
-    console.log(data);
+ 
+  const handleInput = async (data: InputData) => { 
+    await Post({endPoint:'user', body: JSON.stringify(data)});
   }; 
+  
+  useEffect(() => { 
+    if (isSuccess && data) { 
+      tost({message:'You have successfully signed up'});
+      router.replace('login');
+    }  
+  },[isSuccess, data]);
 
   return (
     <ScrollView>
@@ -51,7 +64,7 @@ export default function Signup() {
             error={errors.password && 'Password must be required'}
           />
           <Pressable onPress={handleSubmit(handleInput)} className='btn !rounded-xl'>
-            <Text className='btn-text'>Sign up</Text>
+            <Text className='btn-text'>{isLoading ? 'Loading...' : 'Sign up'}</Text>
           </Pressable>
         </View>
       </View>

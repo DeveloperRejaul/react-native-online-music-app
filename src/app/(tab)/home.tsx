@@ -3,8 +3,8 @@ import React from 'react';
 
 export default function Home() {
   return (
-    <View>
-      <Text>Home</Text>
+    <View className='container center'>
+      <Text className='text-2xl text-light-100'>Home</Text>
     </View>
   );
 }

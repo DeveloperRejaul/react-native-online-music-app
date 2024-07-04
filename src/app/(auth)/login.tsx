@@ -1,25 +1,46 @@
 import { View, Text, Pressable } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Logo from '@/src/assets/icons/Logo';
 import { useForm } from 'react-hook-form';
 import Input from '@/src/components/input';
 import { useRouter } from 'expo-router';
+import useFetch from '@/src/hooks/useFetch';
+import { tost } from '@/src/utils/toast';
+import { store } from '@/src/utils/store';
 
 interface InputData { 
   email: string;
   password: string;
 }
+interface DataType extends InputData { 
+  access_token: string
+}
 
 export default function Login() {
   const router = useRouter();
+  const { Post, data, isLoading, isSuccess} = useFetch<DataType>();
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: { email: '', password: '' }
   });
   
-  const handleInput = (data: InputData) => { 
-    console.log(data);
-    router.replace('(tab)/home');
+  useEffect(() => {
+    const init = async () => {
+      if (isSuccess && data) { 
+        await store.save('access_token', data.access_token);
+        tost({message:'You have successfully login'});
+        router.replace('(tab)/home');
+      }  
+    };
+    init();
+  }, [isSuccess, data]);
+  
+
+
+  const handleInput = async (data: InputData) => { 
+    await Post({endPoint:'user/login', body: JSON.stringify(data)});
   }; 
+
+
 
   return (
     <View className='container center gap-y-10'>
@@ -43,8 +64,12 @@ export default function Login() {
           placeholder='********'
           error={errors.password && 'Password must be required'}
         />
-        <Pressable onPress={handleSubmit(handleInput)} className='btn !rounded-xl'>
-          <Text className='btn-text'>Login</Text>
+        <Pressable
+          disabled={isLoading}
+          onPress={handleSubmit(handleInput)}
+          className='btn !rounded-xl'
+        >
+          <Text className='btn-text'>{ isLoading ? 'Loading..' :' Login'}</Text>
         </Pressable>
       </View>
     </View>
