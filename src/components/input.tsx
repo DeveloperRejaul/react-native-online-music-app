@@ -13,13 +13,14 @@ interface InputProps {
   label?: string
   error?: string
   required?: boolean
+  className?: string
 }
 
 
 
 export default function Input(props: InputProps) {
   return (
-    <View>
+    <View className={props.className}>
       {props?.label && <Text className='text-light-200 text-xl font-bold mb-2'>{props?.label}</Text>}
       <Controller
         control={props.control}

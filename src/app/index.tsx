@@ -13,7 +13,7 @@ export default function Index() {
   //   const init = async () => { 
   //     const token = await store.find('access_token');
   //     if (token) return await Get({ endPoint: 'user/auth', token });
-  //     router.replace('(auth)');
+  //     router.replace('(stack)');
   //   };
   //   init();
   // }, []);
@@ -21,6 +21,6 @@ export default function Index() {
   
   // if(isLoading) return <Loading />;
   // if(isSuccess) return <Redirect href={'(tab)/home'} />;
-  // if (isError) return <Redirect href='(auth)' />;
+  // if (isError) return <Redirect href='(stack)' />;
   return <Redirect href={'(tab)/home'} />;
 }

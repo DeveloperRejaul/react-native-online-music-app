@@ -62,11 +62,13 @@ export default function Home() {
       >
         <View className='flex-row justify-between w-full items-center pb-1 pt-2' >
           <Pressable
-            onPress={()=> router.push('(tab)/home/listen')}
+            onPress={() => router.push({
+              pathname: '(stack)/listen',
+              params: musics[0]
+            })}
             className='flex-row' style={{ columnGap: 15 }}
           >
             <Image
-              
               style={{height:50, width:50}}
               source={img}
               className='rounded-md'

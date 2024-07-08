@@ -27,9 +27,12 @@ export default function RootLayout() {
 
   return (
     <>
-      <Stack screenOptions={{ headerShown: false }} >
+      <Stack screenOptions={{ headerShown: false}}>
         <Stack.Screen name='index' />
-        <Stack.Screen name='(auth)' />
+        <Stack.Screen
+          name='(stack)'
+          options={{ animation: 'slide_from_bottom', presentation: 'modal' }}
+        />
         <Stack.Screen name='(tab)' />
       </Stack>
       <Toast />
