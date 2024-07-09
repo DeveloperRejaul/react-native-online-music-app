@@ -16,6 +16,11 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
@@ -23,7 +28,8 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.rejaul.reactnativeonlinemusic"
+      "package": "com.rejaul.reactnativeonlinemusic",
+        "permissions": ["WAKE_LOCK"]
     },
     "web": {
       "bundler": "metro",

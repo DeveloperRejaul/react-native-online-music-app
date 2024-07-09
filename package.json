@@ -11,7 +11,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "native":"npx expo run:android"
+    "native": "npx expo run:android"
   },
   "jest": {
     "preset": "jest-expo"
@@ -20,7 +20,6 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-native-community/slider": "4.5.2",
     "@react-navigation/native": "^6.0.2",
-    "@simform_solutions/react-native-audio-waveform": "^2.0.0",
     "expo": "~51.0.17",
     "expo-av": "~14.0.6",
     "expo-constants": "~16.0.2",

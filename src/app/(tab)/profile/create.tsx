@@ -1,27 +1,63 @@
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as documentPicker from 'expo-document-picker';
 import { useForm } from 'react-hook-form';
 import Header from '@/src/components/header';
 import Input from '@/src/components/input';
 import ColorPicker from '@/src/components/color-picker';
 import { colors } from '@/src/constants/colors';
-
+import { Audio, AVPlaybackSource } from 'expo-av';
+import Play from '@/src/assets/icons/play';
+import Pause from '@/src/assets/icons/pause';
 
 
 export default function Create() {
   const { control } = useForm();
-  const [audio, setAudio] = useState<string | null>(null);
-  const [image, setImage] = useState<string | null> (null);
-
-  const handleAudioSelect = async () => {
-    const file = await documentPicker.getDocumentAsync({ type: 'audio/*' });
-    if (!file.canceled) setAudio(file?.assets[0]?.uri);
-  };
+  const [image, setImage] = useState<string | null>(null);
+  
+  const [audio, setAudio] = useState<AVPlaybackSource | null>(null);
+  const [sound, setSound] = useState<Audio.Sound>();
+  const [isPlaying , setIsPlaying] = useState(false);
+  
   const handleImageSelect = async () => {
     const file = await documentPicker.getDocumentAsync({ type: 'image/*' }); 
     if (!file.canceled) setImage(`${file?.assets[0]?.uri}`);
   };
+
+
+  // handle audio music
+  const handleAudioSelect = async () => {
+    const file = await documentPicker.getDocumentAsync({ type: 'audio/*' });
+    if (!file.canceled) setAudio(file?.assets[0]);
+  };
+
+  async function playSound() {
+    if (audio && !sound) {
+      setIsPlaying(true);
+      const { sound } = await Audio.Sound.createAsync(audio);
+      setSound(sound);
+      await sound.playAsync();
+    } 
+
+    if (sound) {
+      setIsPlaying(true);
+      await sound.playAsync();
+    }
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+        sound.unloadAsync();
+      }
+      : undefined;
+  }, [sound]);
+
+  useEffect(() => {
+    const init = async () => {};
+    init();
+  }, [sound]);
+  
 
 
   return (
@@ -45,10 +81,30 @@ export default function Create() {
           <Text className='text-light-100 font-bold w-full text-xl mt-1'>Select Music</Text>
           {audio ?
             <View
-              className='rounded-lg bg-light-600'
+              className='rounded-lg bg-light-600 justify-center'
               style={{height: 100, width: '100%' }}
-            /> : <Pressable onPress={handleAudioSelect} style={{height:100, width:'100%', backgroundColor:colors.light[600]}} className='rounded-lg' />
+            >
+           
+              {
+                isPlaying ?
+                  <Pause color={colors.light[100]}
+                    onPress={() => {
+                      setIsPlaying(false);
+                      if (sound) sound.pauseAsync();
+                    }}
+                  /> :
+                  <Play
+                    color={colors.light[100]}
+                    outline={colors.light[100]}
+                    onPress={playSound}
+                  />
+              }
+              
+            </View> : <Pressable onPress={handleAudioSelect} style={{ height: 100, width: '100%', backgroundColor: colors.light[600] }} className='rounded-lg' />
           }
+
+
+
           <ColorPicker />
         </View>
       </ScrollView>

@@ -10,6 +10,6 @@ class HelloWorldPackage: ReactPackage {
     ): MutableList<NativeModule> = listOf(HelloWorldModule(reactContext)).toMutableList()
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-        return listOf(CustomTextViewManager())
+        return listOf()
     }
 }

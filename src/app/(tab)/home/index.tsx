@@ -36,8 +36,6 @@ export default function Home() {
           text='M'
           onPress={handleSideBar}
         />
-     
-
         <Button
           text='All'
           onPress={handleSideBar}
@@ -51,7 +49,6 @@ export default function Home() {
           textStyle={{fontWeight:'normal', color:colors.light[100]}}
         />
       </View>
-      {/* musics */}
       <View className='py-5' >
         <Text className='sub-title !text-left mb-7'>To get you started</Text>
         <CardList data={musics} />
