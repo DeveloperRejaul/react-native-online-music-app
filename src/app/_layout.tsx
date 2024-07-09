@@ -3,9 +3,14 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import Toast from 'react-native-toast-message';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
+import TrackPlayer, { AppKilledPlaybackBehavior, RepeatMode } from 'react-native-track-player';
+import mp3 from '@/src/assets/audio/sample.mp3';
+import coverPhoto from '@/src/assets/images/demo.jpg';
+import { PlaybackService } from '../utils/service';
+// TrackPlayer.registerPlaybackService(() => PlaybackService);
+
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -18,15 +23,32 @@ export default function RootLayout() {
 
 
   useEffect(() => { 
-    const init =async () => { 
-      await Audio.setAudioModeAsync({
-        staysActiveInBackground: true,
-        playsInSilentModeIOS: true,
-        interruptionModeIOS: InterruptionModeIOS.DuckOthers, // Change as you like
-        interruptionModeAndroid: InterruptionModeAndroid.DoNotMix, // Change as you like
-        shouldDuckAndroid: true,
-        playThroughEarpieceAndroid: true,
-      });
+    const init = async () => { 
+
+      try {
+        // await TrackPlayer.setupPlayer();
+        // await TrackPlayer.setRepeatMode(RepeatMode.Queue);
+         
+        // add audio in player
+        // await TrackPlayer.add({
+        //   url: mp3,
+        //   title: 'Track Title',
+        //   artist: 'Track Artist',
+        //   artwork: coverPhoto
+        // });
+
+        // // setup audio in background 
+        // TrackPlayer.updateOptions({
+        //   android: {
+        //     appKilledPlaybackBehavior: AppKilledPlaybackBehavior.ContinuePlayback,
+        //   },
+        // });
+        // await TrackPlayer.play();
+        // await TrackPlayer.pause();
+        // await TrackPlayer.reset();
+      } catch (error) {
+        console.log(error);
+      }
     }; 
     init();
   },[]);
