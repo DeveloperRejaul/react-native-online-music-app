@@ -1,17 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Image, ScrollView, View } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import React, { useState } from 'react';
 import * as documentPicker from 'expo-document-picker';
 import { useForm } from 'react-hook-form';
-import { Audio } from 'expo-av';
 import Header from '@/src/components/header';
-import Button from '@/src/components/Button';
 import Input from '@/src/components/input';
 import ColorPicker from '@/src/components/color-picker';
+import { colors } from '@/src/constants/colors';
+
 
 
 export default function Create() {
-  const [permissionResponse, requestPermission] = Audio.usePermissions();
   const { control } = useForm();
   const [audio, setAudio] = useState<string | null>(null);
   const [image, setImage] = useState<string | null> (null);
@@ -25,13 +23,6 @@ export default function Create() {
     if (!file.canceled) setImage(`${file?.assets[0]?.uri}`);
   };
 
-  useEffect(() => {
-    const init = async () => { 
-      await requestPermission();
-    };
-    init();
-    
-  },[]);
 
   return (
     <View className='container'>
@@ -41,15 +32,24 @@ export default function Create() {
           <Input name='name' control={control} className='w-full' label='Name' placeholder='Enter your song name' />
           <Input name='title' control={control} className='w-full' label='Title' placeholder='Enter song title' />
           
-          <Image
-            className='rounded-lg'
-            resizeMode='cover'
-            style={{height: 100, width: '100%' }}
-            source={{ uri: image as string }}
-          />
+          <Text className='text-light-100 font-bold w-full text-xl mt-1'>Select Image</Text>
+          {image ?
+            <Image
+              className='rounded-lg'
+              resizeMode='cover'
+              style={{height: 100, width: '100%' }}
+              source={{ uri: image as string }}
+            /> : <Pressable onPress={handleImageSelect} style={{height:100, width:'100%', backgroundColor:colors.light[600]}} className='rounded-lg' />
+          }
+          
+          <Text className='text-light-100 font-bold w-full text-xl mt-1'>Select Music</Text>
+          {audio ?
+            <View
+              className='rounded-lg bg-light-600'
+              style={{height: 100, width: '100%' }}
+            /> : <Pressable onPress={handleAudioSelect} style={{height:100, width:'100%', backgroundColor:colors.light[600]}} className='rounded-lg' />
+          }
           <ColorPicker />
-          <Button text='Select Image' onPress={handleImageSelect} />
-          <Button text='Select Music' onPress={ handleAudioSelect} />
         </View>
       </ScrollView>
     </View>

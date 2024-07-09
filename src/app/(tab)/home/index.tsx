@@ -1,4 +1,4 @@
-import { FlatList, Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
+import { FlatList, Image, ImageSourcePropType, Pressable, Text, View } from 'react-native';
 import React from 'react';
 import Button from '@/src/components/Button';
 import { colors } from '@/src/constants/colors';
@@ -21,9 +21,9 @@ interface CardPropsTypes {
 }
 
 export default function Home() {
-
-  const handleSideBar = () => { };
   const router = useRouter();
+
+  const handleSideBar = async () => {};
 
   return (
     <View className='container pt-16'>
@@ -36,6 +36,8 @@ export default function Home() {
           text='M'
           onPress={handleSideBar}
         />
+     
+
         <Button
           text='All'
           onPress={handleSideBar}
@@ -54,7 +56,6 @@ export default function Home() {
         <Text className='sub-title !text-left mb-7'>To get you started</Text>
         <CardList data={musics} />
       </View>
-          
 
       {/* Music Listen bottom Bar */}
       <View
