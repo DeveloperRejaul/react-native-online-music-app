@@ -25,7 +25,7 @@ class MainApplication : Application(), ReactApplication {
           override fun getPackages(): List<ReactPackage>? {
             val packages: MutableList<ReactPackage> = PackageList(this).getPackages()
             // below MyAppPackage is added to the list of packages returned
-            packages.add(HelloWorldPackage())
+            packages.add(ToastPackage())
             return packages
           }
           override fun getJSMainModuleName(): String = ".expo/.virtual-metro-entry"

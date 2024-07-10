@@ -1,9 +1,9 @@
 import { NativeModules } from 'react-native';
-const { HelloWorldModule } = NativeModules;
+const { Toast } = NativeModules;
 
-interface IHelloWorldModule { 
-  createCalendarEvent: (eventName: string, location: string, cb: (error: string, res: string) => void) => void;
+interface IToastModule { 
+  show: (text: string) => void;
   createCalendarEvent2: (eventName: string, location: string) => Promise<string>; 
 }
 
-export const HelloWorld: IHelloWorldModule = HelloWorldModule;
+export const ToastModule: IToastModule = Toast;

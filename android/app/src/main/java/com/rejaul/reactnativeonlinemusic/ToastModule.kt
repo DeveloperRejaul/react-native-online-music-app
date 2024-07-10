@@ -2,18 +2,17 @@ package com.rejaul.reactnativeonlinemusic
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
-import android.util.Log
-import com.facebook.react.bridge.Callback
+import android.widget.Toast
 import com.facebook.react.bridge.Promise
 
-class HelloWorldModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
-    override fun getName() = "HelloWorldModule"
+class ToastModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+
+    override fun getName() = "Toast"
 
     @ReactMethod
-    fun createCalendarEvent(name: String, location: String, callback: Callback ) {
-        Log.d("CalendarModule", "Create event called with name: $name and location: $location")
-        callback.invoke(null, location);
+    fun show(text: String) {
+        Toast.makeText(reactApplicationContext,text,Toast.LENGTH_SHORT).show();
     }
 
     @ReactMethod

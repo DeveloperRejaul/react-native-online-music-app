@@ -4,10 +4,10 @@ import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
 
-class HelloWorldPackage: ReactPackage {
+class ToastPackage: ReactPackage {
     override fun createNativeModules(
         reactContext: ReactApplicationContext
-    ): MutableList<NativeModule> = listOf(HelloWorldModule(reactContext)).toMutableList()
+    ): MutableList<NativeModule> = listOf(ToastModule(reactContext)).toMutableList()
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
         return listOf()

@@ -3,12 +3,12 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import Toast from 'react-native-toast-message';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import 'react-native-reanimated';
-import TrackPlayer, { AppKilledPlaybackBehavior, RepeatMode } from 'react-native-track-player';
-import mp3 from '@/src/assets/audio/sample.mp3';
-import coverPhoto from '@/src/assets/images/demo.jpg';
-import { PlaybackService } from '../utils/service';
+// import TrackPlayer, { AppKilledPlaybackBehavior, RepeatMode } from 'react-native-track-player';
+// import mp3 from '@/src/assets/audio/sample.mp3';
+// import coverPhoto from '@/src/assets/images/demo.jpg';
+// import { PlaybackService } from '../utils/service';
 // TrackPlayer.registerPlaybackService(() => PlaybackService);
 
 

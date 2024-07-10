@@ -9,6 +9,7 @@ import img from '@/src/assets/images/demo.jpg';
 import Favorite from '@/src/assets/icons/favorite';
 import Slider from '@react-native-community/slider';
 import Play from '@/src/assets/icons/play';
+import { ToastModule } from '@/src/utils/native.fn';
 
 
 type DataType = {
@@ -23,7 +24,10 @@ interface CardPropsTypes {
 export default function Home() {
   const router = useRouter();
 
-  const handleSideBar = async () => {};
+  const handleSideBar = async () => {
+    // custom  toast  module example 
+    ToastModule.show('Hello world!, This is my fast module');
+  };
 
   return (
     <View className='container pt-16'>
