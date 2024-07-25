@@ -2,16 +2,17 @@ import { Text, Image, useWindowDimensions, Pressable, ImageSourcePropType, View 
 import Favorite from '../assets/icons/favorite';
 import { colors } from '../constants/colors';
 
-interface CardProps { 
-  onPress?: () => void;
+type CardDataTypes = {
   img: ImageSourcePropType;
-  title: string;
-  color: string;
-  name: string;
+  title: string
+  color: string,
+  name: string,
+  favorite: boolean,
+  onPress: () => void;
+  onFavorite?: () => void;
 }
 
-
-export default function Card(props: CardProps) { 
+export default function Card(props: CardDataTypes) { 
   const { width, height } = useWindowDimensions();
 
   const cardHeight = height / 3.5;
@@ -70,8 +71,9 @@ export default function Card(props: CardProps) {
         className='m-1 absolute right-1'
       >
         <Favorite
+          onPress={props.onFavorite}
           color={colors.light[100]}
-          outline={colors.light[100]}
+          outline={ props.favorite ? colors.light[100] : colors.transparent}
         />
       </View>
     </Pressable>

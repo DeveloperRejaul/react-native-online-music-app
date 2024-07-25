@@ -10,14 +10,18 @@ import Pause from '@/src/assets/icons/pause';
 import Play from '@/src/assets/icons/play';
 import Plus from '@/src/assets/icons/plus';
 import { colors } from '@/src/constants/colors';
+import { useMusic } from '@/src/context/musicContext';
+import useMusicProgress from '@/src/hooks/useMusicProgress';
 
 
 export default function Listen() {
   const params = useLocalSearchParams();
   const { height, width} = useWindowDimensions();
+  const { isPlaying, pauseMusic, playMusic, } = useMusic();
+  
+
   const color = params.color as string; 
   const img = params.img as ImageSourcePropType; 
-  const isPlaying = false;
   
   return (
     <LinearGradient
@@ -37,9 +41,9 @@ export default function Listen() {
         {/* Music control part*/}
         <View className='w-full py-10' style={{rowGap:20}} > 
           <View className='w-full flex-row items-center justify-between'>
-            <View>
-              <Text className='sub-title !text-left'>Lorem, ipsum.</Text>
-              <Text className='text-light-200'>Lorem, ipsum.</Text>
+            <View style={{width : width * .7}}>
+              <Text className='sub-title !text-left' numberOfLines={1}>{params.title}</Text>
+              <Text className='text-light-200'>{params.name}</Text>
             </View>
             <View className='flex-row' style={{columnGap:10}}>
               <Plus color={colors.light[100]} />
@@ -47,23 +51,20 @@ export default function Listen() {
             </View>
           </View>
           <View>
-            <Slider
-              style={{ width: width-10, height: 10, transform:[{translateX:-10}] }}
-              minimumValue={0}
-              maximumValue={1}
-              minimumTrackTintColor={colors.light[100]}
-              maximumTrackTintColor={colors.light[500]}
-              thumbTintColor={colors.light[100]}
-            />
-            <View className='flex-row justify-between px-4'>
-              <Text className='text-light-300 mt-1'>0.20</Text>
-              <Text className='text-light-300 mt-1'>4.20</Text>
-            </View>
+            <SliderCom />
           </View>
           <View className='flex-row center' style={{columnGap:30}}>
             <Next color={colors.light[100]} style={{ transform: [{ rotate: '180deg' }] }} size={50} />
             <View className='w-20 h-20 bg-light-100 rounded-full center'>
-              { isPlaying ? <Pause color={colors.dark[100]} />: <Play color={colors.dark[100]} /> }
+              {isPlaying ?
+                <Pause
+                  color={colors.dark[100]}
+                  onPress={async () => await pauseMusic()}
+                /> :
+                <Play
+                  color={colors.dark[100]}
+                  onPress={async () => await playMusic()}
+                />}
             </View>
             <Next color={colors.light[100]} size={50} />
           </View>
@@ -77,6 +78,9 @@ export default function Listen() {
 
 function Header() {
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const { width } = useWindowDimensions();
+  
   return (
     <View className='pt-14 flex-row justify-between items-center'>
       <ArrowLeft
@@ -84,14 +88,54 @@ function Header() {
         style={{ transform: [{ rotate: '-90deg' }] }}
         onPress={()=> router.back()}
       />
-      <View>
-        <Text className='text-light-100'> Lorem ipsum dolor sit amet. </Text>
-        <Text className='text-light-100 font-bold'> Lorem ipsum dolor </Text>
+      <View style={{width: width * 0.7}} >
+        <Text className='text-light-100' numberOfLines={1}> {params.title} </Text>
+        <Text className='text-light-100 font-bold' numberOfLines={1}>{params.name} </Text>
       </View>
       <Dots
         color={colors.light[100]}
         size={30}
       />
     </View>
+  );
+}
+
+
+function SliderCom() { 
+  const { width } = useWindowDimensions();
+  const { progress, setProgress} = useMusicProgress();
+  const { musicDuration, seekTo } = useMusic();
+
+  const totalSecond = Number(progress.toString().split('.')[0]);
+  const totalDuration = Number(musicDuration.toFixed(0));
+ 
+
+  return (
+    <>
+      <Slider
+        value={progress / musicDuration}
+        style={{ width: width-10, height: 10, transform:[{translateX:-10}] }}
+        minimumValue={0}
+        maximumValue={1}
+        minimumTrackTintColor={colors.light[100]}
+        maximumTrackTintColor={colors.light[500]}
+        thumbTintColor={colors.light[100]}
+        onValueChange={async(value) => { 
+          setProgress(value * musicDuration);
+          await seekTo(value * musicDuration);
+        }}
+      />
+      <View className='flex-row justify-between px-4'>
+        <Text className='text-light-300 mt-1'>
+          {((totalSecond / 60).toString().split('.')[0]).padStart(2, '0') || '00'}:
+          {((totalSecond % 60).toString()).padStart(2, '0') || '00'}
+        </Text>
+        <Text className='text-light-300 mt-1'>
+          {(totalDuration / 60).toFixed(0).padStart(2, '0')}
+          :
+          {(totalDuration % 60).toString().padStart(2, '0')}
+        </Text>
+      </View>
+    </>
   );
 }

@@ -1,41 +1,52 @@
+
 import img from '@/src/assets/images/demo.jpg';
+import mp3 from '@/src/assets/audio/sample.mp3';
 import { colors } from '../constants/colors';
+
 export const musics = [
   {
-    img,
-    title: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam, numquam.',
+    id:'01',
+    img: img,
+    title: 'Lorem ipsum, dolor sitip sum, dolor sitipsum, dolor siti psum, dolor sit',
     color: colors.error[200],
-    name:'Atif islam'
+    name: 'Atif islam',
+    url: mp3,
+    favorite: false,
   },
   {
-    img,
-    title: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam, numquam.',
+    id:'02',
+    img: img,
+    title: 'Lorem ipsum, dolor sitip sum, dolor sitipsum, dolor siti psum, dolor sit',
     color: colors.error[200],
-    name:'Atif islam'
+    name: 'Atif islam',
+    url: mp3,
+    favorite: false,
   },
   {
-    img,
-    title: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam, numquam.',
+    id:'03',
+    img: img,
+    title: 'Lorem ipsum, dolor sitip sum, dolor sitipsum, dolor siti psum, dolor sit',
     color: colors.error[200],
-    name:'Atif islam'
+    name: 'Atif islam',
+    url: mp3,
+    favorite: false,
   },
   {
-    img,
-    title: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam, numquam.',
+    id:'04',
+    img: img,
+    title: 'Lorem ipsum, dolor sitip sum, dolor sitipsum, dolor siti psum, dolor sit',
     color: colors.error[200],
-    name:'Atif islam'
+    name: 'Atif islam',
+    url: mp3,
+    favorite: false,
   },
   {
-    img,
-    title: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam, numquam.',
+    id:'05',
+    img: img,
+    title: 'Lorem ipsum, dolor sitip sum, dolor sitipsum, dolor siti psum, dolor sit',
     color: colors.error[200],
-    name:'Atif islam'
+    name: 'Atif islam',
+    url: mp3,
+    favorite: false,
   },
-  {
-    img,
-    title: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam, numquam.',
-    color: colors.error[200],
-    name:'Atif islam'
-  },
-  
 ];

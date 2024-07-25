@@ -9,6 +9,7 @@ import { colors } from '@/src/constants/colors';
 import { Audio, AVPlaybackSource } from 'expo-av';
 import Play from '@/src/assets/icons/play';
 import Pause from '@/src/assets/icons/pause';
+import Button from '@/src/components/Button';
 
 
 export default function Create() {
@@ -64,7 +65,7 @@ export default function Create() {
     <View className='container'>
       <Header title='Create Music' />
       <ScrollView>
-        <View className='flex-1 center w-full' style={{rowGap:10}}>
+        <View className='flex-1 center w-full' style={{rowGap:10 ,paddingBottom : 50} }>
           <Input name='name' control={control} className='w-full' label='Name' placeholder='Enter your song name' />
           <Input name='title' control={control} className='w-full' label='Title' placeholder='Enter song title' />
           
@@ -75,16 +76,18 @@ export default function Create() {
               resizeMode='cover'
               style={{height: 100, width: '100%' }}
               source={{ uri: image as string }}
-            /> : <Pressable onPress={handleImageSelect} style={{height:100, width:'100%', backgroundColor:colors.light[600]}} className='rounded-lg' />
+            /> :
+            <Pressable onPress={handleImageSelect}
+              style={{ height: 100, width: '100%', backgroundColor: colors.light[600] }}
+              className='rounded-lg'
+            />
           }
-          
           <Text className='text-light-100 font-bold w-full text-xl mt-1'>Select Music</Text>
           {audio ?
             <View
               className='rounded-lg bg-light-600 justify-center'
               style={{height: 100, width: '100%' }}
             >
-           
               {
                 isPlaying ?
                   <Pause color={colors.light[100]}
@@ -99,13 +102,16 @@ export default function Create() {
                     onPress={playSound}
                   />
               }
-              
-            </View> : <Pressable onPress={handleAudioSelect} style={{ height: 100, width: '100%', backgroundColor: colors.light[600] }} className='rounded-lg' />
+            </View> : 
+            <Pressable
+              onPress={handleAudioSelect}
+              style={{ height: 100, width: '100%', backgroundColor: colors.light[600] }}
+              className='rounded-lg'
+            />
           }
-
-
-
           <ColorPicker />
+
+          <Button text='Create Music ' className='w-full' onPress={() => { }} />
         </View>
       </ScrollView>
     </View>
