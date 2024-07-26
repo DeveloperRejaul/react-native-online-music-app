@@ -1,9 +1,8 @@
-import { FlatList, Image, ImageSourcePropType, Pressable, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import { FlatList, Image, Pressable, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Button from '@/src/components/Button';
 import { colors } from '@/src/constants/colors';
 import Card from '@/src/components/Card';
-import { musics } from '@/src/db/music';
 import { useRouter } from 'expo-router';
 import Favorite from '@/src/assets/icons/favorite';
 import Slider from '@react-native-community/slider';
@@ -11,41 +10,56 @@ import Play from '@/src/assets/icons/play';
 import { useMusic } from '@/src/context/musicContext';
 import Pause from '@/src/assets/icons/pause';
 import useMusicProgress from '@/src/hooks/useMusicProgress';
+import useFetch from '@/src/hooks/useFetch';
 
 
-type CardDataTypes = {
+
+
+interface IMusicData { 
+  color: string;
+  createdAt: string;
   id: string;
-  img: ImageSourcePropType;
-  title: string
-  color: string,
-  name: string,
-  url: string,
-  favorite: boolean,
+  image: string;
+  name: string;
+  title: string;
+  updatedAt: string;
+  url: string;
 }
 interface CardPropsTypes { 
-  data: CardDataTypes[],
-  onPress: (item: CardDataTypes) => void
+  data: IMusicData[],
+  onPress: (item: IMusicData) => void
 }
 
 export default function Home() {
   const router = useRouter();
-  const {addMusic, playMusic, pauseMusic, isPlaying } = useMusic();
+  const { Get, data, isLoading , isError ,isSuccess } = useFetch<IMusicData[]>();
+  const { addMusic, playMusic, pauseMusic, isPlaying } = useMusic();
+  
+
+  useEffect(() => { 
+    (async () => { 
+      await Get({endPoint:'music'});
+    })();
+  }, []);
+
+
   
   const [isShowPlayer, setIsShowPlayer] = useState(false);
-  const [musicInfo, setMusicInfo] = useState<CardDataTypes>({} as CardDataTypes);
+  const [musicInfo, setMusicInfo] = useState<IMusicData>({} as IMusicData);
   
-  const handleCard = async (item: CardDataTypes) => {
+  const handleCard = async (item: IMusicData) => {
     await addMusic({
       url: item.url,
       title: item.title,
       artist: item.name,
-      artwork: item.img as string
+      artwork: item.image as string
     });
     setMusicInfo(item);
     setIsShowPlayer(true);
     await playMusic();
   };
-   
+
+
   return (
     <View className='container pt-16'>
       {/* Button Part */}
@@ -72,7 +86,7 @@ export default function Home() {
       </View>
       <View className='py-5' >
         <Text className='sub-title !text-left mb-7'>To get you started</Text>
-        <CardList data={musics} onPress={handleCard} />
+        {isSuccess && data !== null && <CardList data={data} onPress={handleCard} />}
       </View>
 
       {/* Music Listen bottom Bar */}
@@ -92,7 +106,7 @@ export default function Home() {
             >
               <Image
                 style={{height:50, width:50}}
-                source={musicInfo.img}
+                source={{ uri :`file/${musicInfo.image}`}}
                 className='rounded-md'
               />
               <View>
@@ -104,7 +118,8 @@ export default function Home() {
               <Favorite
                 onPress={() => { }}
                 color={colors.light[100]}
-                outline={ musicInfo.favorite ? colors.light[100] : colors.transparent}
+                // outline={ true ? colors.light[100] : colors.transparent}
+                outline={colors.light[100] }
                 style={{marginTop:7}}
               />
               {isPlaying ?
@@ -163,13 +178,14 @@ function CardList(props: CardPropsTypes) {
           color={colors.error[700]}
           onPress={() => props.onPress(item)}
           key={index}
-          img={item.img}
+          image={item.image}
           title={item.title}
-          favorite={item.favorite}
-          onFavorite={() =>{ }}
         />
       )
       }
     />
   );
 }
+
+
+

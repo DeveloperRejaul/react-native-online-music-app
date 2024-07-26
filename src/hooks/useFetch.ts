@@ -1,19 +1,6 @@
 import { useState } from 'react';
-
-
-interface GetParams { 
-  endPoint?: string;
-  token?: string
-}
-
-interface PostParams { 
-  endPoint?: string;
-  body: string;
-  'Content-type'?: string;
-}
-
-
-const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
+import { GetParams, PostParams } from './types';
+import { BASE_URL } from '../constants/const';
 
 
 export default <T,>() => { 

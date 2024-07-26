@@ -1,15 +1,12 @@
-import { Text, Image, useWindowDimensions, Pressable, ImageSourcePropType, View } from 'react-native';
-import Favorite from '../assets/icons/favorite';
-import { colors } from '../constants/colors';
+import { Text, Image, useWindowDimensions, Pressable, View } from 'react-native';
+import { BASE_URL } from '../constants/const';
 
 type CardDataTypes = {
-  img: ImageSourcePropType;
+  image: string;
   title: string
   color: string,
   name: string,
-  favorite: boolean,
   onPress: () => void;
-  onFavorite?: () => void;
 }
 
 export default function Card(props: CardDataTypes) { 
@@ -40,7 +37,7 @@ export default function Card(props: CardDataTypes) {
         <Image
           resizeMode='cover'
           style={{width:'100%'}}
-          source={props.img}
+          source={{ uri : `/${BASE_URL}/file/${props.image}`}}
         />
         <View
           className='h-2 w-full'
@@ -66,15 +63,6 @@ export default function Card(props: CardDataTypes) {
           style={{ backgroundColor: props.color}}
         />
         <Text className='font-bold text-light-100'>{ props.name}</Text>
-      </View>
-      <View
-        className='m-1 absolute right-1'
-      >
-        <Favorite
-          onPress={props.onFavorite}
-          color={colors.light[100]}
-          outline={ props.favorite ? colors.light[100] : colors.transparent}
-        />
       </View>
     </Pressable>
   );
