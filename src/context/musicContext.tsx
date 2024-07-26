@@ -9,7 +9,6 @@ TrackPlayer.registerPlaybackService(() => PlaybackService);
 // create a context
 const Context = createContext <ContextTypes>( {} as ContextTypes);
 
-
 // setup provider
 export function MusicProvider({ children }: MusicProviderTypes) {
   const [isSetupPlayer, setIsSetupPlayer] = useState(false);
@@ -18,12 +17,6 @@ export function MusicProvider({ children }: MusicProviderTypes) {
   const [musicDuration, setMusicDuration] = useState(0);
 
 
- 
-  // handle add music
-  const addMusic = async (music: AddTrack) => {
-    await TrackPlayer.add(music);
-  };
-    
   // handle get progress
   const getProgress = async () => await TrackPlayer.getProgress();
 
@@ -47,7 +40,6 @@ export function MusicProvider({ children }: MusicProviderTypes) {
       setIsPlaying(false);
     } catch (error) {
       console.log(error);
-        
     }
   };
     
@@ -72,6 +64,12 @@ export function MusicProvider({ children }: MusicProviderTypes) {
     });
   }; 
     
+
+  const addMusic = async (music: AddTrack) => {
+    TrackPlayer.setQueue([music]);
+  };
+    
+
   // handle player setup 
   const playerSetup = async () => {
     if (!isSetupPlayer) {

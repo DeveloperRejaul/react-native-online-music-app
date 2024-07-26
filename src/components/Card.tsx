@@ -16,6 +16,11 @@ export default function Card(props: CardDataTypes) {
   const cardWidth = (width / 2) * 0.8;
   const cardImageHeight = cardHeight * 0.9;
 
+  // fetch(`${BASE_URL}/file/${props.image}`).then((response) => { 
+  //   console.log(response);
+  // });
+
+
 
   return (
     <Pressable
@@ -36,17 +41,13 @@ export default function Card(props: CardDataTypes) {
       >
         <Image
           resizeMode='cover'
-          style={{width:'100%'}}
-          source={{ uri : `/${BASE_URL}/file/${props.image}`}}
+          style={{width : cardWidth, height :cardImageHeight *0.7}}
+          source={{
+            uri: `${BASE_URL}/file/${props.image}`
+          }}
         />
-        <View
-          className='h-2 w-full'
-          style={{ backgroundColor: props.color }}
-        />
-        <Text
-          numberOfLines={2}
-          className='text-light-800'
-        >
+        <View className='h-2 w-full' style={{ backgroundColor: props.color }} />
+        <Text numberOfLines={2} className='text-light-800' >
           {props.title}
         </Text>
       </View>

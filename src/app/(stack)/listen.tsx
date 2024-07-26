@@ -1,4 +1,4 @@
-import { Image, ImageSourcePropType, Text, useWindowDimensions, View } from 'react-native';
+import { Image, Text, useWindowDimensions, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Slider from '@react-native-community/slider';
@@ -11,18 +11,18 @@ import Play from '@/src/assets/icons/play';
 import Plus from '@/src/assets/icons/plus';
 import { colors } from '@/src/constants/colors';
 import { useMusic } from '@/src/context/musicContext';
-import useMusicProgress from '@/src/hooks/useMusicProgress';
-
+import { BASE_URL } from '@/src/constants/const';
+import { useProgress } from 'react-native-track-player';
 
 export default function Listen() {
   const params = useLocalSearchParams();
   const { height, width} = useWindowDimensions();
   const { isPlaying, pauseMusic, playMusic, } = useMusic();
   
-
   const color = params.color as string; 
-  const img = params.img as ImageSourcePropType; 
+  const img = params.image as string; 
   
+
   return (
     <LinearGradient
       colors={[color, '#0000000e']}
@@ -33,7 +33,7 @@ export default function Listen() {
         <View style={{ width: '100%', height:height/2 }} >
           <Image
             className='rounded-xl'
-            source={img}
+            source={{uri : `${BASE_URL}/file/${img}`}}
             resizeMode='cover'
             style={{ width: '100%', height: '100%' }}
           />
@@ -103,17 +103,17 @@ function Header() {
 
 function SliderCom() { 
   const { width } = useWindowDimensions();
-  const { progress, setProgress} = useMusicProgress();
+  const { position } = useProgress();
   const { musicDuration, seekTo } = useMusic();
 
-  const totalSecond = Number(progress.toString().split('.')[0]);
+  const totalSecond = Number(position.toString().split('.')[0]);
   const totalDuration = Number(musicDuration.toFixed(0));
  
 
   return (
     <>
       <Slider
-        value={progress / musicDuration}
+        value={position / musicDuration}
         style={{ width: width-10, height: 10, transform:[{translateX:-10}] }}
         minimumValue={0}
         maximumValue={1}
@@ -121,7 +121,6 @@ function SliderCom() {
         maximumTrackTintColor={colors.light[500]}
         thumbTintColor={colors.light[100]}
         onValueChange={async(value) => { 
-          setProgress(value * musicDuration);
           await seekTo(value * musicDuration);
         }}
       />

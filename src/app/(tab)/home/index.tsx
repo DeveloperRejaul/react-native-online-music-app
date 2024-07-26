@@ -1,4 +1,4 @@
-import { FlatList, Image, Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Pressable, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Button from '@/src/components/Button';
 import { colors } from '@/src/constants/colors';
@@ -9,9 +9,9 @@ import Slider from '@react-native-community/slider';
 import Play from '@/src/assets/icons/play';
 import { useMusic } from '@/src/context/musicContext';
 import Pause from '@/src/assets/icons/pause';
-import useMusicProgress from '@/src/hooks/useMusicProgress';
 import useFetch from '@/src/hooks/useFetch';
-
+import { BASE_URL } from '@/src/constants/const';
+import { useProgress } from 'react-native-track-player';
 
 
 
@@ -26,30 +26,19 @@ interface IMusicData {
   url: string;
 }
 interface CardPropsTypes { 
-  data: IMusicData[],
   onPress: (item: IMusicData) => void
 }
 
 export default function Home() {
   const router = useRouter();
-  const { Get, data, isLoading , isError ,isSuccess } = useFetch<IMusicData[]>();
   const { addMusic, playMusic, pauseMusic, isPlaying } = useMusic();
-  
-
-  useEffect(() => { 
-    (async () => { 
-      await Get({endPoint:'music'});
-    })();
-  }, []);
-
-
   
   const [isShowPlayer, setIsShowPlayer] = useState(false);
   const [musicInfo, setMusicInfo] = useState<IMusicData>({} as IMusicData);
   
   const handleCard = async (item: IMusicData) => {
     await addMusic({
-      url: item.url,
+      url: `${BASE_URL}/file/${item.url}`,
       title: item.title,
       artist: item.name,
       artwork: item.image as string
@@ -86,7 +75,7 @@ export default function Home() {
       </View>
       <View className='py-5' >
         <Text className='sub-title !text-left mb-7'>To get you started</Text>
-        {isSuccess && data !== null && <CardList data={data} onPress={handleCard} />}
+        <CardList onPress={handleCard} />
       </View>
 
       {/* Music Listen bottom Bar */}
@@ -106,7 +95,7 @@ export default function Home() {
             >
               <Image
                 style={{height:50, width:50}}
-                source={{ uri :`file/${musicInfo.image}`}}
+                source={{ uri :`${BASE_URL}/file/${musicInfo.image}`}}
                 className='rounded-md'
               />
               <View>
@@ -147,10 +136,11 @@ export default function Home() {
 
 function SliderCom() {
   const { musicDuration, seekTo } = useMusic();
-  const { progress, setProgress} = useMusicProgress();
+  const { position } = useProgress();
+  
   return (
     <Slider
-      value={progress / musicDuration}
+      value={position / musicDuration}
       style={{ width: '100%', height: 10 }}
       minimumValue={0}
       maximumValue={1}
@@ -158,7 +148,6 @@ function SliderCom() {
       maximumTrackTintColor={colors.dark[700]}
       thumbTintColor={colors.light[900]}
       onValueChange={ async (value: number) => {
-        setProgress(value * musicDuration);
         await seekTo(value * musicDuration);
       }}
     />
@@ -167,24 +156,35 @@ function SliderCom() {
 
 
 function CardList(props: CardPropsTypes) { 
-  return (
-    <FlatList
-      showsHorizontalScrollIndicator={ false}
-      horizontal
-      data={props.data}
-      renderItem={({ item, index }) => (
-        <Card
-          name='Atif islam'
-          color={colors.error[700]}
-          onPress={() => props.onPress(item)}
-          key={index}
-          image={item.image}
-          title={item.title}
-        />
-      )
-      }
-    />
-  );
+  const { Get, data, isLoading, isError, isSuccess } = useFetch<IMusicData[]>();
+  useEffect(() => { 
+    (async () => { 
+      await Get({endPoint:'music'});
+    })();
+  }, []);
+
+  if(isLoading) return <ActivityIndicator size={50} color={colors.light[100]} />;
+  if(isError) return <Text> Something went wrong  </Text>;
+
+  if(isSuccess && data !== null)
+    return (
+      <FlatList
+        showsHorizontalScrollIndicator={ false}
+        horizontal
+        data={data}
+        renderItem={({ item, index }) => (
+          <Card
+            name='Atif islam'
+            color={colors.error[700]}
+            onPress={() => props.onPress(item)}
+            key={index}
+            image={item.image}
+            title={item.title}
+          />
+        )
+        }
+      />
+    );
 }
 
 
