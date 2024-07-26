@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState} from 'react';
 import { MusicProviderTypes,ContextTypes } from './types';
-import TrackPlayer, { AddTrack, AppKilledPlaybackBehavior, RepeatMode } from 'react-native-track-player';
+import TrackPlayer, { AddTrack, AppKilledPlaybackBehavior, RepeatMode,usePlaybackState, State} from 'react-native-track-player';
 import { PlaybackService } from '../utils/service';
 
 // setup Track Player
 TrackPlayer.registerPlaybackService(() => PlaybackService);
+
 
 // create a context
 const Context = createContext <ContextTypes>( {} as ContextTypes);
@@ -12,9 +13,10 @@ const Context = createContext <ContextTypes>( {} as ContextTypes);
 // setup provider
 export function MusicProvider({ children }: MusicProviderTypes) {
   const [isSetupPlayer, setIsSetupPlayer] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [musicPosition, setMusicPosition] = useState(0);
   const [musicDuration, setMusicDuration] = useState(0);
+  const [isPlaying ,setIsPlaying] = useState(false);
+  const playerState = usePlaybackState();
 
 
   // handle get progress
@@ -25,9 +27,9 @@ export function MusicProvider({ children }: MusicProviderTypes) {
     try {
       await TrackPlayer.play();
       const { duration, position } = await getProgress();
+      setIsPlaying(true);
       setMusicPosition(position);
       setMusicDuration(duration); 
-      setIsPlaying(true);
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +49,6 @@ export function MusicProvider({ children }: MusicProviderTypes) {
   const resetMusic = async () => {
     try {
       await TrackPlayer.reset();
-      setIsPlaying(false);
       setMusicPosition(0);
       setMusicDuration(0); 
     } catch (error) {
@@ -87,13 +88,26 @@ export function MusicProvider({ children }: MusicProviderTypes) {
     
   useEffect(() => {
     const init = async () => { 
-      await playerSetup();
-      await setRepeatMode();
-      setBackgroundMusic();
+      try {
+        await playerSetup();
+        await setRepeatMode();
+        setBackgroundMusic();
+      } catch (error) {
+        console.log(error);
+      }
     };
     init();
   },[]);
 
+  useEffect( () => { 
+    (async () => {    
+      if (playerState.state === State.Playing) {
+        setIsPlaying(true);
+        const { duration } = await getProgress();
+        setMusicDuration(duration);
+      }
+    })();
+  },[playerState.state]);
  
     
     
@@ -102,7 +116,7 @@ export function MusicProvider({ children }: MusicProviderTypes) {
       addMusic, playMusic, pauseMusic, resetMusic,
       setBackgroundMusic, playerSetup, setRepeatMode,
       getProgress,seekTo,
-      isPlaying,musicPosition, musicDuration,
+      isPlaying,musicPosition, musicDuration
     }}
     > 
       { children}

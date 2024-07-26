@@ -17,7 +17,6 @@ export default () => {
             if (pre < musicDuration) {
               return pre + 1;
             } else {
-              clearInterval(interval);
               return 0;
             }
           });

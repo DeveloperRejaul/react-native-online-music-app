@@ -103,8 +103,8 @@ function Header() {
 
 function SliderCom() { 
   const { width } = useWindowDimensions();
-  const { position } = useProgress();
   const { musicDuration, seekTo } = useMusic();
+  const { position } = useProgress();
 
   const totalSecond = Number(position.toString().split('.')[0]);
   const totalDuration = Number(musicDuration.toFixed(0));
@@ -113,14 +113,15 @@ function SliderCom() {
   return (
     <>
       <Slider
-        value={position / musicDuration}
+        value={position /musicDuration}
         style={{ width: width-10, height: 10, transform:[{translateX:-10}] }}
         minimumValue={0}
         maximumValue={1}
         minimumTrackTintColor={colors.light[100]}
         maximumTrackTintColor={colors.light[500]}
         thumbTintColor={colors.light[100]}
-        onValueChange={async(value) => { 
+        onValueChange={async (value) => { 
+          // handleDebounce(value);
           await seekTo(value * musicDuration);
         }}
       />

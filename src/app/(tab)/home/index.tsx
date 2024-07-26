@@ -11,9 +11,7 @@ import { useMusic } from '@/src/context/musicContext';
 import Pause from '@/src/assets/icons/pause';
 import useFetch from '@/src/hooks/useFetch';
 import { BASE_URL } from '@/src/constants/const';
-import { useProgress } from 'react-native-track-player';
-
-
+import { useActiveTrack, useProgress } from 'react-native-track-player';
 
 interface IMusicData { 
   color: string;
@@ -26,15 +24,16 @@ interface IMusicData {
   url: string;
 }
 interface CardPropsTypes { 
-  onPress: (item: IMusicData) => void
+  onPress: (item: IMusicData) => void;
+  setMusicInfo: React.Dispatch<React.SetStateAction<IMusicData>>
+  musicInfo: IMusicData
 }
 
 export default function Home() {
-  const router = useRouter();
-  const { addMusic, playMusic, pauseMusic, isPlaying } = useMusic();
-  
-  const [isShowPlayer, setIsShowPlayer] = useState(false);
+  const { addMusic, playMusic } = useMusic();
   const [musicInfo, setMusicInfo] = useState<IMusicData>({} as IMusicData);
+  const track = useActiveTrack();
+
   
   const handleCard = async (item: IMusicData) => {
     await addMusic({
@@ -44,18 +43,15 @@ export default function Home() {
       artwork: item.image as string
     });
     setMusicInfo(item);
-    setIsShowPlayer(true);
     await playMusic();
   };
+
 
 
   return (
     <View className='container pt-16'>
       {/* Button Part */}
-      <View
-        className='flex-row'
-        style={{columnGap:10}}
-      >
+      <View className='flex-row' style={{columnGap:10}}>
         <Button
           text='M'
           onPress={()=>{}}
@@ -75,69 +71,77 @@ export default function Home() {
       </View>
       <View className='py-5' >
         <Text className='sub-title !text-left mb-7'>To get you started</Text>
-        <CardList onPress={handleCard} />
+        <CardList onPress={handleCard} setMusicInfo={setMusicInfo} musicInfo={musicInfo} />
       </View>
 
       {/* Music Listen bottom Bar */}
-      {isShowPlayer &&
-        <View
-          className='bg-light-900 px-3 pb-1 rounded-lg absolute bottom-5 w-full mx-5'
-        >
-          <View className='flex-row justify-between w-full items-center pb-1 pt-2' >
-            <Pressable
-              onPress={() => router.push({
-                pathname: '(stack)/listen',
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-ignore
-                params: musicInfo
-              })}
-              className='flex-row' style={{ columnGap: 15 }}
-            >
-              <Image
-                style={{height:50, width:50}}
-                source={{ uri :`${BASE_URL}/file/${musicInfo.image}`}}
-                className='rounded-md'
-              />
-              <View>
-                <Text className='font-bold text-light-100'>{musicInfo.name}</Text>
-                <Text className='text-light-100' numberOfLines={1}>{musicInfo.title.slice(0, 20)}{ musicInfo.title.length > 20 && '...'}</Text>
-              </View>
-            </Pressable>
-            <View className='flex-row' style={{columnGap:10}}>
-              <Favorite
-                onPress={() => { }}
-                color={colors.light[100]}
-                // outline={ true ? colors.light[100] : colors.transparent}
-                outline={colors.light[100] }
-                style={{marginTop:7}}
-              />
-              {isPlaying ?
-                <Pause
-                  size={35}
-                  onPress={async () => await pauseMusic()}
-                  color={colors.light[100]}
-                  outline={colors.light[100]}
-                />:
-                <Play
-                  size={35}
-                  onPress={async() => await playMusic() }
-                  color={colors.light[100]}
-                  outline={colors.light[100]}
-                />}
-            </View>
-          </View>
-          <SliderCom />
-        </View>
-      }
+      {track && <MusicBottomBar {...musicInfo} /> }
     </View>
   );
 }
 
 
+function MusicBottomBar(musicInfo: IMusicData ) { 
+  const {pauseMusic, playMusic, isPlaying } = useMusic();
+  const router = useRouter();
+
+  return (
+    <View className='bg-light-900 px-3 pb-1 rounded-lg absolute bottom-5 w-full mx-5'>
+      <View className='flex-row justify-between w-full items-center pb-1 pt-2' >
+        <Pressable
+          onPress={() => router.push({
+            pathname: '(stack)/listen',
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            params:musicInfo
+          })}
+          className='flex-row' style={{ columnGap: 15 }}
+        >
+          <Image
+            style={{height:50, width:50}}
+            source={{ uri :`${BASE_URL}/file/${musicInfo.image}`}}
+            className='rounded-md'
+          />
+          <View>
+            <Text className='font-bold text-light-100'>{musicInfo.name}</Text>
+            <Text className='text-light-100' numberOfLines={1}>
+              {musicInfo.title?.slice(0, 20)}{musicInfo?.title?.length > 20 && '...'}
+            </Text>
+          </View>
+        </Pressable>
+        <View className='flex-row' style={{columnGap:10}}>
+          <Favorite
+            onPress={() => { }}
+            color={colors.light[100]}
+            // outline={ true ? colors.light[100] : colors.transparent}
+            outline={colors.light[100] }
+            style={{marginTop:7}}
+          />
+          {isPlaying ?
+            <Pause
+              size={35}
+              onPress={async () => await pauseMusic()}
+              color={colors.light[100]}
+              outline={colors.light[100]}
+            />:
+            <Play
+              size={35}
+              onPress={async() => await playMusic() }
+              color={colors.light[100]}
+              outline={colors.light[100]}
+            />}
+        </View>
+      </View>
+      <SliderCom />
+    </View>
+  );
+}
+
+
+
 function SliderCom() {
   const { musicDuration, seekTo } = useMusic();
   const { position } = useProgress();
-  
   return (
     <Slider
       value={position / musicDuration}
@@ -147,7 +151,7 @@ function SliderCom() {
       minimumTrackTintColor={colors.light[100]}
       maximumTrackTintColor={colors.dark[700]}
       thumbTintColor={colors.light[900]}
-      onValueChange={ async (value: number) => {
+      onValueChange={async (value: number) => {
         await seekTo(value * musicDuration);
       }}
     />
@@ -157,11 +161,24 @@ function SliderCom() {
 
 function CardList(props: CardPropsTypes) { 
   const { Get, data, isLoading, isError, isSuccess } = useFetch<IMusicData[]>();
+  const { isPlaying } = useMusic();
+  const track = useActiveTrack();
+
+  
   useEffect(() => { 
     (async () => { 
       await Get({endPoint:'music'});
     })();
   }, []);
+
+  
+  useEffect(() => { 
+    if (data !==null && isSuccess && track && JSON.stringify(props.musicInfo) === '{}') {
+      const url = track.url.split('/').pop();
+      const activeMusic = data.find(music => music.url === url);
+      props.setMusicInfo(activeMusic!);
+    }
+  }, [data, isSuccess,isPlaying]);
 
   if(isLoading) return <ActivityIndicator size={50} color={colors.light[100]} />;
   if(isError) return <Text> Something went wrong  </Text>;
