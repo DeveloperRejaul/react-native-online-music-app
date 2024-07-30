@@ -1,7 +1,7 @@
 import { View, Text, Image } from 'react-native';
 import React from 'react';
 import img from '@/src/assets/images/demo.jpg';
-import Button from '@/src/components/Button';
+import Button from '@/src/core/components/Button';
 import { useRouter } from 'expo-router';
 
 export default function Profile() {

@@ -9,9 +9,9 @@ import Next from '@/src/assets/icons/next';
 import Pause from '@/src/assets/icons/pause';
 import Play from '@/src/assets/icons/play';
 import Plus from '@/src/assets/icons/plus';
-import { colors } from '@/src/constants/colors';
-import { useMusic } from '@/src/context/musicContext';
-import { BASE_URL } from '@/src/constants/const';
+import { colors } from '@/src/core/constants/colors';
+import { useMusic } from '@/src/core/context/musicContext';
+import { BASE_URL } from '@/src/core/constants/const';
 import { useProgress } from 'react-native-track-player';
 
 export default function Listen() {

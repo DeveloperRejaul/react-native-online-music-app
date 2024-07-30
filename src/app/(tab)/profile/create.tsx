@@ -2,14 +2,14 @@ import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import * as documentPicker from 'expo-document-picker';
 import { useForm } from 'react-hook-form';
-import Header from '@/src/components/header';
-import Input from '@/src/components/input';
-import ColorPicker from '@/src/components/color-picker';
-import { colors } from '@/src/constants/colors';
+import Header from '@/src/core/components/header';
+import Input from '@/src/core/components/input';
+import ColorPicker from '@/src/core/components/color-picker';
+import { colors } from '@/src/core/constants/colors';
 import { Audio, AVPlaybackSource } from 'expo-av';
 import Play from '@/src/assets/icons/play';
 import Pause from '@/src/assets/icons/pause';
-import Button from '@/src/components/Button';
+import Button from '@/src/core/components/Button';
 
 
 export default function Create() {

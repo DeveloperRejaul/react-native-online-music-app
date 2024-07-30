@@ -2,18 +2,13 @@ import { View, Text, Pressable, ScrollView, useWindowDimensions } from 'react-na
 import React, { useEffect } from 'react';
 import Logo from '@/src/assets/icons/Logo';
 import { useForm } from 'react-hook-form';
-import Input from '@/src/components/input';
-import useFetch from '@/src/hooks/useFetch';
+import Input from '@/src/core/components/input';
+import useFetch from '@/src/core/hooks/useFetch';
 import { useRouter } from 'expo-router';
-import { tost } from '@/src/utils/toast';
+import { tost } from '@/src/core/utils/toast';
+import { InputData } from '../types';
 
-interface InputData { 
-  email: string;
-  password: string;
-  name: string;
-}
-
-export default function Signup() {
+export default function SignUp() {
   const { height } = useWindowDimensions();
   const router = useRouter();
   const { Post, data, isLoading, isSuccess} = useFetch();

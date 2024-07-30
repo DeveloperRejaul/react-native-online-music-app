@@ -1,7 +1,7 @@
 import Favorite from '@/src/assets/icons/favorite';
 import Home from '@/src/assets/icons/Home';
 import Profile from '@/src/assets/icons/Profile';
-import { colors } from '@/src/constants/colors';
+import { colors } from '@/src/core/constants/colors';
 import { Tabs } from 'expo-router';
 import { Text } from 'react-native';
 
@@ -39,7 +39,7 @@ export default () => (
       }}
     />
     <Tabs.Screen
-      name='Favorite'
+      name='favorite'
       options={{
         tabBarIcon: ({ color, size }) => (
           <Favorite

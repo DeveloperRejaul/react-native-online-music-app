@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState} from 'react';
 import { MusicProviderTypes,ContextTypes } from './types';
 import TrackPlayer, { AddTrack, AppKilledPlaybackBehavior, RepeatMode,usePlaybackState, State} from 'react-native-track-player';
-import { PlaybackService } from '../utils/service';
+import { PlaybackService } from '@/src/core/utils/service';
 
 // setup Track Player
 TrackPlayer.registerPlaybackService(() => PlaybackService);

@@ -1,4 +1,6 @@
+import { Redirect } from 'expo-router';
 
-import Main from './main';
-export default () => <Main />;
+export default () => { 
+  return <Redirect href={'/(stack)/auth/'} />;
+};
 

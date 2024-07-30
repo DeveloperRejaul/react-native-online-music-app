@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import ArrowLeft from '../assets/icons/arrow-left';
+import ArrowLeft from '../../assets/icons/arrow-left';
 import { colors } from '../constants/colors';
 import { useRouter } from 'expo-router';
 

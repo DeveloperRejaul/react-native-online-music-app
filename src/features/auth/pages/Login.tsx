@@ -2,19 +2,13 @@ import { View, Text, Pressable } from 'react-native';
 import React, { useEffect } from 'react';
 import Logo from '@/src/assets/icons/Logo';
 import { useForm } from 'react-hook-form';
-import Input from '@/src/components/input';
+import Input from '@/src/core/components/input';
 import { useRouter } from 'expo-router';
-import useFetch from '@/src/hooks/useFetch';
-import { tost } from '@/src/utils/toast';
-import { store } from '@/src/utils/store';
+import useFetch from '@/src/core/hooks/useFetch';
+import { tost } from '@/src/core/utils/toast'; 
+import { store } from '@/src/core/utils/store';
+import type{ DataType, InputDataLogin } from '../types';
 
-interface InputData { 
-  email: string;
-  password: string;
-}
-interface DataType extends InputData { 
-  access_token: string
-}
 
 export default function Login() {
   const router = useRouter();
@@ -34,9 +28,7 @@ export default function Login() {
     init();
   }, [isSuccess, data]);
   
-
-
-  const handleInput = async (data: InputData) => { 
+  const handleInput = async (data: InputDataLogin) => { 
     await Post({endPoint:'user/login', body: JSON.stringify(data)});
   }; 
 

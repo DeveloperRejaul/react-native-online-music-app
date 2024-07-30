@@ -1,11 +1,11 @@
 import React from 'react';
 import Logo from '@/src/assets/icons/Logo';
 import { Pressable, Text, View } from 'react-native';
-import { colors } from '@/src/constants/colors';
+import { colors } from '@/src/core/constants/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 
-export default function Main() {
+export default function Main( ) {
   const router = useRouter();
   return (
     <LinearGradient
@@ -30,11 +30,13 @@ export default function Main() {
       </View>
 
       <View className='w-full gap-y-3'>
-        <Pressable onPress={() => router.push('/signup')} className='btn'>
+        <Pressable onPress={() => router.push('/auth/signup')} className='btn'>
           <Text className='btn-text'>Sign up for free</Text>
         </Pressable>
         <Pressable
-          onPress={() => router.push('/login')}
+          onPress={() => {
+            router.push('/auth/login');
+          }}
           className='btn !bg-transparent'
         >
           <Text className='btn-text'>Login</Text>

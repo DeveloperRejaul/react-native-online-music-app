@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable quotes */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { colors } = require("./src/constants/colors");
+const { colors } = require("./src/core/constants/colors");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
