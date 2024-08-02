@@ -12,5 +12,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "tailwind.config.js"
-  ]
+, "src/app/index.jsx"  ]
 }

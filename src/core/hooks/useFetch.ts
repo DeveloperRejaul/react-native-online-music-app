@@ -41,7 +41,8 @@ export default <T,>() => {
         method: 'POST',
         body: params?.body,
         headers: {
-          'Content-Type': params?.['Content-type'] || 'application/json'
+          'Content-Type': params?.['Content-type'] || 'application/json',
+          'Accept': 'application/json',
         }
       });
       const result = await response.json();

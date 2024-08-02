@@ -9022,6 +9022,11 @@ ua-parser-js@^1.0.35:
   resolved "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-1.0.38.tgz"
   integrity sha512-Aq5ppTOfvrCMgAPneW1HfWj66Xi7XL+/mIy996R1/CLS/rcyJQm6QZdsKrUeivDFQ+Oc9Wyuwor8Ze8peEoUoQ==
 
+ui-meter@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/ui-meter/-/ui-meter-0.2.3.tgz#5285f41c67a0b37249c1e1d33c7885c3406f21b4"
+  integrity sha512-GgnM02cUfksas4mMY7N2OVyhN6zt0oiCCbDqjHHpb2XubJRVMLONf1RoKewnhPDQEXCxgfl96+JYSASyv8mEeA==
+
 unbox-primitive@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/unbox-primitive/-/unbox-primitive-1.0.2.tgz"

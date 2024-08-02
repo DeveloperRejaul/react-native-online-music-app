@@ -33,6 +33,9 @@ export default function Music() {
     }
   },[]);
 
+  
+
+  
  
   return (
     <View className='container pt-16'>

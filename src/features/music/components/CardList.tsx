@@ -39,7 +39,7 @@ export default function CardList(props: CardPropsTypes) {
         data={data}
         renderItem={({ item, index }) => (
           <Card
-            name='Atif islam'
+            name={item.name}
             color={colors.error[700]}
             onPress={() => props.onPress(item)}
             key={index}
